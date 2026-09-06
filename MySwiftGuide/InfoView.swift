@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct InfoView: View {
+    @Binding var titleOn: Bool
+    
     var body: some View {
         NavigationView {
             List(Post.samplePosts) { post in
@@ -8,15 +10,16 @@ struct InfoView: View {
                     InfoRow(post: post)
                 }
             }
-            .navigationTitle("Справочник Swift")
+            .navigationTitle(titleOn ? "Справочник Swift" : "")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarHidden(!titleOn)  // ← КЛЮЧЕВОЙ МОМЕНТ
             .listStyle(PlainListStyle())
         }
     }
 }
 
-// Превью
 struct InfoView_Previews: PreviewProvider {
     static var previews: some View {
-        InfoView()
+        InfoView(titleOn: .constant(true))
     }
 }
