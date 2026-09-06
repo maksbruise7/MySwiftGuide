@@ -2,21 +2,20 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("isTitleOn") private var titleOn: Bool = true
+    @State private var posts = Post.samplePosts
     
     var body: some View {
         TabView {
-            // Передаем titleOn в InfoView
-            InfoView(titleOn: $titleOn)
+            InfoView(titleOn: $titleOn, posts: $posts)
                 .tabItem {
                     Label("Статьи", systemImage: "book.fill")
                 }
             
-            HelloView()
+            QuizView(posts: $posts, titleOn: $titleOn)
                 .tabItem {
-                    Label("Привет", systemImage: "person.fill")
+                    Label("Викторина", systemImage: "brain.head.profile")
                 }
             
-            // ✅ НЕ передаем аргументы в SettingsView
             SettingsView()
                 .tabItem {
                     Label("Настройки", systemImage: "gear")

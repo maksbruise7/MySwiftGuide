@@ -6,23 +6,34 @@ struct InfoDetails: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                // Верхняя часть с иконкой и заголовком
                 HStack {
                     post.image
                         .resizable()
                         .scaledToFit()
                         .frame(width: 60, height: 60)
-                        .foregroundColor(.blue)
+                        .foregroundColor(post.isUnlocked ? .blue : .gray)
                     
-                    Text(post.title)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+                    VStack(alignment: .leading) {
+                        Text(post.title)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        
+                        if !post.isUnlocked {
+                            HStack {
+                                Image(systemName: "lock.fill")
+                                    .font(.caption)
+                                Text("Закрыто. Пройдите викторину, чтобы открыть!")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding(.top, 2)
+                        }
+                    }
                 }
                 .padding(.horizontal)
                 
                 Divider()
                 
-                // Блок "Описание"
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Описание")
                         .font(.headline)
@@ -30,10 +41,10 @@ struct InfoDetails: View {
                     
                     Text(post.description)
                         .font(.body)
+                        .opacity(post.isUnlocked ? 1.0 : 0.6)
                 }
                 .padding(.horizontal)
                 
-                // Блок "Подробная информация"
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Подробная информация")
                         .font(.headline)
@@ -42,6 +53,7 @@ struct InfoDetails: View {
                     Text(post.detailedInfo)
                         .font(.body)
                         .lineSpacing(4)
+                        .opacity(post.isUnlocked ? 1.0 : 0.6)
                 }
                 .padding(.horizontal)
                 
@@ -54,7 +66,6 @@ struct InfoDetails: View {
     }
 }
 
-// Превью
 struct InfoDetails_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {

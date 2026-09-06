@@ -5,33 +5,41 @@ struct InfoRow: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Иконка
             post.image
                 .resizable()
                 .scaledToFit()
                 .frame(width: 50, height: 50)
-                .foregroundColor(.blue)
+                .foregroundColor(post.isUnlocked ? .blue : .gray)
                 .padding(8)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.blue.opacity(0.1))
+                        .fill(post.isUnlocked ? Color.blue.opacity(0.1) : Color.gray.opacity(0.1))
                 )
             
-            // Текст
             VStack(alignment: .leading, spacing: 4) {
-                Text(post.title)
-                    .font(.headline)
+                HStack {
+                    Text(post.title)
+                        .font(.headline)
+                        .foregroundColor(post.isUnlocked ? .primary : .secondary)
+                    
+                    if !post.isUnlocked {
+                        Image(systemName: "lock.fill")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                }
+                
                 Text(post.description)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(post.isUnlocked ? .secondary : .gray)
                     .lineLimit(2)
             }
         }
         .padding(.vertical, 4)
+        .opacity(post.isUnlocked ? 1.0 : 0.6)
     }
 }
 
-// Превью для проверки
 struct InfoRow_Previews: PreviewProvider {
     static var previews: some View {
         InfoRow(post: Post.samplePosts[0])
